@@ -1,0 +1,39 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "build",
+            "command": "C:\\TDM-GCC-64\\bin\\g++.exe",
+            "args": [
+                "-g",
+                "${file}",
+                "${fileDirname}\\View\\*.cpp",
+                //"${fileDirname}\\Model\\*.cpp",
+                //"${fileDirname}\\ViewModel\\*.cpp",
+                "-o",
+                "${fileDirname}\\..\\bin\\${fileBasenameNoExtension}.exe",
+                "-IC:\\opencv-4.9.0\\build_mgw\\install\\include",
+                "-IC:\\wxwidget-3.2.5\\include",
+                "-IC:\\wxwidget-3.2.5\\include\\msvc",
+                "-LC:\\opencv-4.9.0\\build_mgw\\install\\x64\\mingw\\bin",
+                "-llibopencv_world490",
+                "-lopencv_videoio_ffmpeg490_64",
+                "-LC:\\wxwidget-3.2.5\\lib\\gcc_dll",
+                "-lwxmsw32u_gcc_custom",
+                "-lwxmsw32u_gl_gcc_custom"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "compiler: C:\\TDM-GCC-64\\bin\\g++.exe"
+        }
+    ]
+}
