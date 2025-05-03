@@ -2,6 +2,7 @@
 #define _MAIN_FRAME_VIEW_H_
 
 #include <wx/wx.h>
+#include "../ViewModel/ClassVM.h"
 
 class MainFrameView : public wxFrame
 {
@@ -10,6 +11,7 @@ public:
     ~MainFrameView();
 
 private:
+    std::shared_ptr<ClassVM> m_ViewModel; 
 
 DECLARE_EVENT_TABLE()
 };
