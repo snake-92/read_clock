@@ -5,6 +5,7 @@
 #include "../Model/Model.h"
 #include <memory>
 
+/// @brief Class View model
 class ClassVM
 {
 public:
