@@ -13,6 +13,10 @@ public:
     ~ClassVM();
 
 private:
+    cv::Mat ConvertWxImageToCvMat(wxImage& image_);
+    void ConvertCvMatToWxImage(const cv::Mat& image_);
+
+private:
     wxImage& m_Image;
     std::shared_ptr<Model> m_model;
 };

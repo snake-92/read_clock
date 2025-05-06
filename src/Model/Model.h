@@ -1,6 +1,8 @@
 #ifndef _CLASS_MODEL_H_
 #define _CLASS_MODEL_H_
 
+#include <opencv2/opencv.hpp>
+
 /// @brief Class Model
 class Model
 {
