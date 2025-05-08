@@ -12,6 +12,9 @@ public:
     ClassVM(wxImage& image);
     ~ClassVM();
 
+    void ReadHour();
+    void DetectClock();
+
 private:
     cv::Mat ConvertWxImageToCvMat(wxImage& image_);
     void ConvertCvMatToWxImage(const cv::Mat& image_);

@@ -5,6 +5,12 @@
 #include "BufferedBitmap.h"
 #include "../ViewModel/ClassVM.h"
 
+enum ID_GUI
+{
+    BUTTON_READ_HOUR,
+    BUTTON_DETECT_CLOCK
+};
+
 class MainFrameView : public wxFrame
 {
 public:
@@ -22,6 +28,10 @@ protected:
     void OnLoadImage(wxCommandEvent& event);
     void OnQuit(wxCommandEvent& event);
     void OnHelp(wxCommandEvent& event);
+
+    // Event button
+    void OnClickReadHour(wxCommandEvent& event);
+    void OnClickDetectClock(wxCommandEvent& event);
 
 private:
     std::shared_ptr<ClassVM> m_ViewModel;

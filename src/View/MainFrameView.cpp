@@ -9,12 +9,27 @@ MainFrameView::MainFrameView(const wxString &title, const wxPoint &pos, const wx
     InitMenuBar();
     InitStatusBar();
 
+    // panels
+    auto sizer = new wxBoxSizer(wxHORIZONTAL);
+
+    // panel boutons
+    auto sizerButton = new wxBoxSizer(wxVERTICAL);
+    auto buttonReadHour = new wxButton(this, ID_GUI::BUTTON_READ_HOUR, "Read hour");
+    auto buttonDetectClock = new wxButton(this, ID_GUI::BUTTON_DETECT_CLOCK, "Detect clock");
+    sizerButton->Add(buttonReadHour, 0, wxEXPAND | wxALL, FromDIP(5));
+    sizerButton->Add(buttonDetectClock, 0, wxEXPAND | wxALL, FromDIP(5));
+    sizer->Add(sizerButton, 0, wxEXPAND | wxALL, FromDIP(5));
+
     // panel viewer image
     auto sizerImage = new wxBoxSizer(wxHORIZONTAL);
     m_bitmap = std::make_shared<BufferedBitmap>(this, wxID_ANY, wxBitmap(wxSize(1, 1)), wxDefaultPosition, FromDIP(wxSize(700, 500)));
     sizerImage->Add(m_bitmap.get(), 1, wxEXPAND | wxALL, FromDIP(5));
 
-    this->SetSizerAndFit(sizerImage);
+    sizer->Add(sizerButton, 0, wxEXPAND | wxALL, FromDIP(5));
+    sizer->AddSpacer(FromDIP(5));
+    sizer->Add(sizerImage, 1, wxEXPAND | wxALL, FromDIP(5));
+
+    this->SetSizerAndFit(sizer);
 
     // init view model
     m_ViewModel = std::make_shared<ClassVM>(m_CurrentImage);    
@@ -29,6 +44,10 @@ BEGIN_EVENT_TABLE(MainFrameView, wxFrame)
     EVT_MENU(wxID_EXIT,  MainFrameView::OnQuit)
     EVT_MENU(wxID_HELP, MainFrameView::OnHelp)
     EVT_MENU(wxID_FILE, MainFrameView::OnLoadImage)
+
+    EVT_BUTTON(ID_GUI::BUTTON_READ_HOUR, MainFrameView::OnClickReadHour)
+    EVT_BUTTON(ID_GUI::BUTTON_DETECT_CLOCK, MainFrameView::OnClickDetectClock)
+    
 END_EVENT_TABLE()
 
 
@@ -111,6 +130,34 @@ void MainFrameView::OnQuit(wxCommandEvent& WXUNUSED(event))
     {
         Close(true);
     }
+}
+
+
+void MainFrameView::OnClickReadHour(wxCommandEvent& event)
+{
+    try
+    {
+        m_ViewModel->ReadHour();
+        UpdateImage(m_CurrentImage);
+    }
+    catch(const std::exception& e)
+    {
+        wxMessageBox(_(e.what()), _("Error"));
+    }
+}
+
+
+void MainFrameView::OnClickDetectClock(wxCommandEvent& event)
+{
+    try
+    {
+        m_ViewModel->DetectClock();
+        UpdateImage(m_CurrentImage);
+    }
+    catch(const std::exception& e)
+    {
+        wxMessageBox(_(e.what()), _("Error"));
+    }   
 }
 
 

@@ -73,3 +73,28 @@ void ClassVM::ConvertCvMatToWxImage(const cv::Mat& image_)
         throw e.what();
     }
 }
+
+
+void ClassVM::ReadHour()
+{
+    try
+    {
+        ConvertCvMatToWxImage(m_model->ReadHour(ConvertWxImageToCvMat(m_Image)));
+    }
+    catch(const std::exception& e)
+    {
+        throw e.what();
+    }
+}
+
+void ClassVM::DetectClock()
+{
+    try
+    {
+        ConvertCvMatToWxImage(m_model->DetectClock(ConvertWxImageToCvMat(m_Image)));   
+    }
+    catch(const std::exception& e)
+    {
+        throw e.what();
+    }
+}

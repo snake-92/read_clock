@@ -9,6 +9,9 @@ class Model
 public:
     Model();
     ~Model();
+
+    cv::Mat ReadHour(const cv::Mat& image);
+    cv::Mat DetectClock(const cv::Mat& image);
 };
 
 #endif
