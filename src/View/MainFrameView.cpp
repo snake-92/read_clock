@@ -135,6 +135,11 @@ void MainFrameView::OnQuit(wxCommandEvent& WXUNUSED(event))
 
 void MainFrameView::OnClickReadHour(wxCommandEvent& event)
 {
+    if(!m_CurrentImage.IsOk())
+    {
+        return;
+    }
+
     try
     {
         m_ViewModel->ReadHour();
@@ -149,6 +154,11 @@ void MainFrameView::OnClickReadHour(wxCommandEvent& event)
 
 void MainFrameView::OnClickDetectClock(wxCommandEvent& event)
 {
+    if(!m_CurrentImage.IsOk())
+    {
+        return;
+    }
+    
     try
     {
         m_ViewModel->DetectClock();

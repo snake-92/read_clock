@@ -12,6 +12,9 @@ public:
 
     cv::Mat ReadHour(const cv::Mat& image);
     cv::Mat DetectClock(const cv::Mat& image);
+
+protected:
+    cv::Mat Skeletonize(const cv::Mat& binary);
 };
 
 #endif
