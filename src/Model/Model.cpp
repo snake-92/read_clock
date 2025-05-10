@@ -20,13 +20,21 @@ cv::Mat Model::ReadHour(const cv::Mat& image)
     cv::GaussianBlur(imgNDG, imGauss, cv::Size(3,3), 3);
     cv::threshold(imGauss, imThresh, 0, 255, cv::THRESH_BINARY_INV | cv::THRESH_OTSU);
 
+    // erode image
+    cv::Mat element = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5));
+    cv::erode(imThresh, imThresh, element);
+
+    // separate two lines in the image center
+    cv::Point center = cv::Point(imThresh.cols/2, imThresh.rows/2);
+    cv::circle(imThresh, center, 25, cv::Scalar(0,0,0), -1);
+   
     // skeletonize
     imgSkelet = Skeletonize(imThresh);
-
+    
     // hough transform
     cv::cvtColor(imgSkelet, imFinal, cv::COLOR_BGR2RGB);
     std::vector<cv::Vec4i> lines;
-    cv::HoughLinesP(imThresh, lines, 1, CV_PI/180, 80, 50, 10);
+    cv::HoughLinesP(imgSkelet, lines, 1, CV_PI/180, 20, 5, 10);
     
     for(const auto& line : lines)
     {
