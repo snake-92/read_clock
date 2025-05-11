@@ -3,6 +3,21 @@
 
 #include <opencv2/opencv.hpp>
 
+enum TYPE_BAND
+{
+    SAME, // if hour and minute have the same angle
+    HOUR,
+    MINUTE
+};
+
+struct BANDS
+{
+    cv::Point p1;
+    cv::Point p2;
+    double angle;
+    TYPE_BAND type;
+};
+
 /// @brief Class Model
 class Model
 {
@@ -15,6 +30,9 @@ public:
 
 protected:
     cv::Mat Skeletonize(const cv::Mat& binary);
+    std::vector<BANDS> FilterBandsByAngle(std::vector<BANDS>& lines, double angleGap = 2.0);
+    void IdentifyBands(std::vector<BANDS>& bands, const cv::Point& center);
+    double Distance(const cv::Point& p1, const cv::Point& p2);
 };
 
 #endif
