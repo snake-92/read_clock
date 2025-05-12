@@ -97,6 +97,7 @@ cv::Mat Model::ReadHour(const cv::Mat& image)
         else if(band.type == TYPE_BAND::MINUTE)
         {
             cv::putText(imFinal, "MINUTE", band.p2, cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255,0,255), 1);
+            cv::putText(imFinal, GetMinute(band) , cv::Point(5,15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255,0,255), 1);
         }
     }
 
@@ -222,4 +223,66 @@ void Model::IdentifyBands(std::vector<BANDS>& bands, const cv::Point& center)
     {
         throw std::invalid_argument("Too many bands found. (IdentifyBands)");    
     }
+}
+
+
+std::string Model::GetMinute(const BANDS& band)
+{
+    if(band.type == TYPE_BAND::HOUR)
+    {
+        throw std::invalid_argument("Band is not minute. (GetMinute)");
+    }
+
+    // get minute by value of angle
+    int gap = 5;
+    if(band.angle <= gap || band.angle >= 360-gap)
+    {
+        return "15";
+    }
+    else if(band.angle <= 30+gap && band.angle >= 30-gap)
+    {
+        return "10";
+    }
+    else if(band.angle <= 60+gap && band.angle >= 60-gap)
+    {
+        return "05";
+    }
+    else if(band.angle <= 90+gap && band.angle >= 90-gap)
+    {
+        return "00";
+    }
+    else if(band.angle <= 120+gap && band.angle >= 120-gap)
+    {
+        return "55";
+    }
+    else if(band.angle <= 150+gap && band.angle >= 150-gap)
+    {
+        return "50";
+    }
+    else if(band.angle <= 180+gap && band.angle >= 180-gap)
+    {
+        return "45";
+    }
+    else if(band.angle <= 210+gap && band.angle >= 210-gap)
+    {
+        return "40";
+    }
+    else if(band.angle <= 240+gap && band.angle >= 240-gap)
+    {
+        return "35";
+    }
+    else if(band.angle <= 270+gap && band.angle >= 270-gap)
+    {
+        return "30";
+    }
+    else if(band.angle <= 300+gap && band.angle >= 300-gap)
+    {
+        return "25";
+    }
+    else if(band.angle <= 330+gap && band.angle >= 330-gap)
+    {
+        return "20";
+    }
+
+    return "XX";
 }
