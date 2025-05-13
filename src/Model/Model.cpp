@@ -93,11 +93,12 @@ cv::Mat Model::ReadHour(const cv::Mat& image)
         if(band.type == TYPE_BAND::HOUR)
         {
             cv::putText(imFinal, "HOUR", band.p2, cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255,0,255), 1);
+            cv::putText(imFinal, GetHours(band) , cv::Point(5,15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255,0,255), 1);
         }
         else if(band.type == TYPE_BAND::MINUTE)
         {
             cv::putText(imFinal, "MINUTE", band.p2, cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255,0,255), 1);
-            cv::putText(imFinal, GetMinute(band) , cv::Point(5,15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255,0,255), 1);
+            cv::putText(imFinal, GetMinute(band) , cv::Point(30,15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255,0,255), 1);
         }
     }
 
@@ -226,9 +227,12 @@ void Model::IdentifyBands(std::vector<BANDS>& bands, const cv::Point& center)
 }
 
 
+/// @brief Get the text corresponding to the minute
+/// @param band 
+/// @return 
 std::string Model::GetMinute(const BANDS& band)
 {
-    if(band.type == TYPE_BAND::HOUR)
+    if(band.type != TYPE_BAND::MINUTE)
     {
         throw std::invalid_argument("Band is not minute. (GetMinute)");
     }
@@ -282,6 +286,71 @@ std::string Model::GetMinute(const BANDS& band)
     else if(band.angle <= 330+gap && band.angle >= 330-gap)
     {
         return "20";
+    }
+
+    return "XX";
+}
+
+
+/// @brief Get the text corresponding to the hour
+/// @param band 
+/// @return 
+std::string Model::GetHours(const BANDS& band)
+{
+    if(band.type != TYPE_BAND::HOUR)
+    {
+        throw std::invalid_argument("Band is not hour. (GetHours)");
+    }
+
+    // get hour by value of angle
+    int gap = 1;
+    if(band.angle >= 0 && band.angle <= 31)
+    {
+        return "02";
+    }
+    else if(band.angle >= 30 && band.angle <= 61)
+    {
+        return "01";
+    }
+    else if(band.angle >= 60 && band.angle <= 91)
+    {
+        return "12";
+    }
+    else if(band.angle > 90 && band.angle <= 121)
+    {
+        return "11";
+    }
+    else if(band.angle >= 120 && band.angle <= 151)
+    {
+        return "10";
+    }
+    else if(band.angle >= 150 && band.angle <= 181)
+    {
+        return "09";
+    }
+    else if(band.angle >= 180 && band.angle <= 211)
+    {
+        return "08";
+    }
+    else if(band.angle >= 210 && band.angle <= 241)
+    {
+        return "07";
+    }
+    else if(band.angle >= 240 && band.angle <= 271)
+    {
+        return "06";
+    }
+    else if(band.angle >= 270 && band.angle <= 301)
+    {
+        return "05";
+    }
+    else if(band.angle >= 300 && band.angle <= 331)
+    {
+        return "04";
+    }
+    else if(band.angle >= 330 && band.angle < 360)
+    {
+        return "03";
     }
 
     return "XX";

@@ -35,6 +35,7 @@ protected:
     void IdentifyBands(std::vector<BANDS>& bands, const cv::Point& center);
     double Distance(const cv::Point& p1, const cv::Point& p2);
     std::string GetMinute(const BANDS& band);
+    std::string GetHours(const BANDS& band);
 };
 
 #endif
