@@ -75,7 +75,7 @@ void ClassVM::ConvertCvMatToWxImage(const cv::Mat& image_)
 }
 
 
-void ClassVM::ReadHour()
+wxString ClassVM::ReadHour()
 {
     try
     {
@@ -85,6 +85,8 @@ void ClassVM::ReadHour()
     {
         throw e.what();
     }
+
+    return (wxString)m_model->GetTime();
 }
 
 void ClassVM::DetectClock()

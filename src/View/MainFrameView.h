@@ -37,6 +37,7 @@ private:
     std::shared_ptr<ClassVM> m_ViewModel;
     std::shared_ptr<BufferedBitmap> m_bitmap;
     wxImage m_CurrentImage; 
+    wxStaticText* m_staticTextTime;
 
 DECLARE_EVENT_TABLE()
 };

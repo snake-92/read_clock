@@ -12,7 +12,7 @@ public:
     ClassVM(wxImage& image);
     ~ClassVM();
 
-    void ReadHour();
+    wxString ReadHour();
     void DetectClock();
 
 private:

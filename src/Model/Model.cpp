@@ -2,7 +2,7 @@
 
 Model::Model()
 {
-
+    m_time = "";
 }
 
 Model::~Model()
@@ -80,6 +80,7 @@ cv::Mat Model::ReadHour(const cv::Mat& image)
     bands = FilterBandsByAngle(bands, 3.0);
     IdentifyBands(bands, center);
 
+    std::string txtMinute(""), txtHour("");
     // draw bands
     for(const auto& band : bands)
     {
@@ -94,15 +95,29 @@ cv::Mat Model::ReadHour(const cv::Mat& image)
         {
             cv::putText(imFinal, "HOUR", band.p2, cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255,0,255), 1);
             cv::putText(imFinal, GetHours(band) , cv::Point(5,15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255,0,255), 1);
+            txtHour = GetHours(band);
         }
         else if(band.type == TYPE_BAND::MINUTE)
         {
             cv::putText(imFinal, "MINUTE", band.p2, cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255,0,255), 1);
             cv::putText(imFinal, GetMinute(band) , cv::Point(30,15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255,0,255), 1);
+            txtMinute = GetMinute(band);
         }
     }
 
+    m_time = txtHour + ":" + txtMinute;
+
     return imFinal;
+}
+
+
+std::string Model::GetTime()
+{
+    if(m_time.empty() || m_time==":")
+    {
+        return "no time read";
+    }
+    return m_time;
 }
 
 

@@ -29,6 +29,9 @@ MainFrameView::MainFrameView(const wxString &title, const wxPoint &pos, const wx
     sizer->AddSpacer(FromDIP(5));
     sizer->Add(sizerImage, 1, wxEXPAND | wxALL, FromDIP(5));
 
+    m_staticTextTime = new wxStaticText(this, wxID_ANY, "00:00");
+    sizerImage->Add(m_staticTextTime, 0, wxEXPAND | wxALL, FromDIP(10));
+
     this->SetSizerAndFit(sizer);
 
     // init view model
@@ -142,7 +145,7 @@ void MainFrameView::OnClickReadHour(wxCommandEvent& event)
 
     try
     {
-        m_ViewModel->ReadHour();
+        m_staticTextTime->SetLabel(m_ViewModel->ReadHour());
         UpdateImage(m_CurrentImage);
     }
     catch(const std::exception& e)

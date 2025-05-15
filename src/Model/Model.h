@@ -28,6 +28,7 @@ public:
 
     cv::Mat ReadHour(const cv::Mat& image);
     cv::Mat DetectClock(const cv::Mat& image);
+    std::string GetTime();
 
 protected:
     cv::Mat Skeletonize(const cv::Mat& binary);
@@ -36,6 +37,9 @@ protected:
     double Distance(const cv::Point& p1, const cv::Point& p2);
     std::string GetMinute(const BANDS& band);
     std::string GetHours(const BANDS& band);
+    
+private:
+    std::string m_time;
 };
 
 #endif
