@@ -8,7 +8,9 @@
 enum ID_GUI
 {
     BUTTON_READ_HOUR,
-    BUTTON_DETECT_CLOCK
+    BUTTON_DETECT_CLOCK,
+    BUTTON_NEXT_IMAGE,
+    BUTTON_PREVIOUS_IMAGE
 };
 
 class MainFrameView : public wxFrame
@@ -32,12 +34,16 @@ protected:
     // Event button
     void OnClickReadHour(wxCommandEvent& event);
     void OnClickDetectClock(wxCommandEvent& event);
+    void OnClickNextImage(wxCommandEvent& event);
+    void OnClickPreviousImage(wxCommandEvent& event);
 
 private:
     std::shared_ptr<ClassVM> m_ViewModel;
     std::shared_ptr<BufferedBitmap> m_bitmap;
     wxImage m_CurrentImage; 
     wxStaticText* m_staticTextTime;
+    wxButton* m_NextImageButton;
+    wxButton* m_PreviousImageButton;
 
 DECLARE_EVENT_TABLE()
 };

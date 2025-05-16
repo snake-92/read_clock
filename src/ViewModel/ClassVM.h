@@ -14,6 +14,8 @@ public:
 
     wxString ReadHour();
     void DetectClock();
+    void NextImage();
+    void PreviousImage();
 
 private:
     cv::Mat ConvertWxImageToCvMat(wxImage& image_);
@@ -22,6 +24,8 @@ private:
 private:
     wxImage& m_Image;
     std::shared_ptr<Model> m_model;
+    std::vector<cv::Mat> m_listImg;
+    int m_currentImgIndex;
 };
 
 #endif

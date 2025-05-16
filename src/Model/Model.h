@@ -26,7 +26,7 @@ public:
     Model();
     ~Model();
 
-    cv::Mat ReadHour(const cv::Mat& image);
+    std::vector<cv::Mat> ReadHour(const cv::Mat& image);
     cv::Mat DetectClock(const cv::Mat& image);
     std::string GetTime();
 

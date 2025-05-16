@@ -4,6 +4,7 @@
 ClassVM::ClassVM(wxImage& image) : m_Image(image)
 {
     m_model = std::make_shared<Model>();
+    m_currentImgIndex = 0;
 }
 
 ClassVM::~ClassVM()
@@ -75,11 +76,38 @@ void ClassVM::ConvertCvMatToWxImage(const cv::Mat& image_)
 }
 
 
+void ClassVM::NextImage()
+{
+    m_currentImgIndex++;
+
+    // limits management 
+    if(m_currentImgIndex >= m_listImg.size()) 
+        m_currentImgIndex = 0;
+    
+    ConvertCvMatToWxImage(m_listImg[m_currentImgIndex]);
+}
+
+
+void ClassVM::PreviousImage()
+{
+    m_currentImgIndex--;
+
+    // limits management 
+    if(m_currentImgIndex < 0) 
+        m_currentImgIndex = m_listImg.size() - 1;
+
+    ConvertCvMatToWxImage(m_listImg[m_currentImgIndex]);
+}
+
+
 wxString ClassVM::ReadHour()
 {
     try
     {
-        ConvertCvMatToWxImage(m_model->ReadHour(ConvertWxImageToCvMat(m_Image)));
+        m_listImg.clear();
+        m_currentImgIndex = 0;
+        m_listImg = m_model->ReadHour(ConvertWxImageToCvMat(m_Image));
+        //ConvertCvMatToWxImage(m_listImg[m_currentImgIndex]);
     }
     catch(const std::exception& e)
     {

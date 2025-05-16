@@ -11,25 +11,32 @@ Model::~Model()
 }
 
 
-cv::Mat Model::ReadHour(const cv::Mat& image)
+std::vector<cv::Mat> Model::ReadHour(const cv::Mat& image)
 {
     cv::Mat imgNDG, imGauss, imThresh, imgSkelet, imFinal;
+    std::vector<cv::Mat> listImg; // list of alls filter images
 
+    listImg.push_back(image.clone());
     // preprocessing
     cv::cvtColor(image, imgNDG, cv::COLOR_BGR2GRAY);
+    listImg.push_back(imgNDG.clone());
     cv::GaussianBlur(imgNDG, imGauss, cv::Size(3,3), 3);
     cv::threshold(imGauss, imThresh, 0, 255, cv::THRESH_BINARY_INV | cv::THRESH_OTSU);
+    listImg.push_back(imThresh.clone());
 
     // erode image
     cv::Mat element = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5));
     cv::erode(imThresh, imThresh, element);
+    listImg.push_back(imThresh.clone());
 
     // separate two lines in the image center
     cv::Point center = cv::Point(imThresh.cols/2, imThresh.rows/2);
     cv::circle(imThresh, center, 25, cv::Scalar(0,0,0), -1);
-   
+    listImg.push_back(imThresh.clone());
+    
     // skeletonize
     imgSkelet = Skeletonize(imThresh);
+    listImg.push_back(imgSkelet.clone());
     
     // hough transform
     cv::cvtColor(imgSkelet, imFinal, cv::COLOR_BGR2RGB);
@@ -107,7 +114,8 @@ cv::Mat Model::ReadHour(const cv::Mat& image)
 
     m_time = txtHour + ":" + txtMinute;
 
-    return imFinal;
+    listImg.push_back(imFinal.clone());
+    return listImg;
 }
 
 

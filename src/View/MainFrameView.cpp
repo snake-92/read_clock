@@ -16,8 +16,18 @@ MainFrameView::MainFrameView(const wxString &title, const wxPoint &pos, const wx
     auto sizerButton = new wxBoxSizer(wxVERTICAL);
     auto buttonReadHour = new wxButton(this, ID_GUI::BUTTON_READ_HOUR, "Read hour");
     auto buttonDetectClock = new wxButton(this, ID_GUI::BUTTON_DETECT_CLOCK, "Detect clock");
+
+    m_NextImageButton = new wxButton(this, ID_GUI::BUTTON_NEXT_IMAGE, ">>");
+    m_PreviousImageButton = new wxButton(this, ID_GUI::BUTTON_PREVIOUS_IMAGE, "<<");
+    m_NextImageButton->Enable(false);
+    m_PreviousImageButton->Enable(false);
+
     sizerButton->Add(buttonReadHour, 0, wxEXPAND | wxALL, FromDIP(5));
     sizerButton->Add(buttonDetectClock, 0, wxEXPAND | wxALL, FromDIP(5));
+
+    sizerButton->Add(m_NextImageButton, 0, wxEXPAND | wxALL, FromDIP(5));
+    sizerButton->Add(m_PreviousImageButton, 0, wxEXPAND | wxALL, FromDIP(5));
+
     sizer->Add(sizerButton, 0, wxEXPAND | wxALL, FromDIP(5));
 
     // panel viewer image
@@ -50,6 +60,8 @@ BEGIN_EVENT_TABLE(MainFrameView, wxFrame)
 
     EVT_BUTTON(ID_GUI::BUTTON_READ_HOUR, MainFrameView::OnClickReadHour)
     EVT_BUTTON(ID_GUI::BUTTON_DETECT_CLOCK, MainFrameView::OnClickDetectClock)
+    EVT_BUTTON(ID_GUI::BUTTON_NEXT_IMAGE, MainFrameView::OnClickNextImage)
+    EVT_BUTTON(ID_GUI::BUTTON_PREVIOUS_IMAGE, MainFrameView::OnClickPreviousImage)
     
 END_EVENT_TABLE()
 
@@ -120,6 +132,9 @@ void MainFrameView::OnLoadImage(wxCommandEvent& event)
 
     UpdateImage(m_CurrentImage);
 
+    m_NextImageButton->Enable(false);
+    m_PreviousImageButton->Enable(false);
+
     PopStatusText(0);
 }
 
@@ -147,6 +162,9 @@ void MainFrameView::OnClickReadHour(wxCommandEvent& event)
     {
         m_staticTextTime->SetLabel(m_ViewModel->ReadHour());
         UpdateImage(m_CurrentImage);
+
+        m_NextImageButton->Enable(true);
+        m_PreviousImageButton->Enable(true);
     }
     catch(const std::exception& e)
     {
@@ -166,11 +184,51 @@ void MainFrameView::OnClickDetectClock(wxCommandEvent& event)
     {
         m_ViewModel->DetectClock();
         UpdateImage(m_CurrentImage);
+
+        m_NextImageButton->Enable(true);
+        m_PreviousImageButton->Enable(true);
     }
     catch(const std::exception& e)
     {
         wxMessageBox(_(e.what()), _("Error"));
     }   
+}
+
+
+void MainFrameView::OnClickNextImage(wxCommandEvent& event)
+{
+    if(!m_CurrentImage.IsOk())
+    {
+        return;
+    }
+
+    try
+    {
+        m_ViewModel->NextImage();
+        UpdateImage(m_CurrentImage);
+    }
+    catch(const std::exception& e)
+    {
+        wxMessageBox(_(e.what()), _("Error"));
+    }
+}
+
+void MainFrameView::OnClickPreviousImage(wxCommandEvent& event)
+{
+    if(!m_CurrentImage.IsOk())
+    {
+        return;
+    }
+
+    try
+    {
+        m_ViewModel->PreviousImage();
+        UpdateImage(m_CurrentImage);
+    }
+    catch(const std::exception& e)
+    {
+        wxMessageBox(_(e.what()), _("Error"));
+    }
 }
 
 
