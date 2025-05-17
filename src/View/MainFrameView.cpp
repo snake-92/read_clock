@@ -1,4 +1,5 @@
 #include "MainFrameView.h"
+#include "../../resources/icons.h"
 
 
 MainFrameView::MainFrameView(const wxString &title, const wxPoint &pos, const wxSize &size, long style) 
@@ -7,6 +8,7 @@ MainFrameView::MainFrameView(const wxString &title, const wxPoint &pos, const wx
     
     // init
     InitMenuBar();
+    InitToolsBar();
     InitStatusBar();
 
     // panels
@@ -17,16 +19,8 @@ MainFrameView::MainFrameView(const wxString &title, const wxPoint &pos, const wx
     auto buttonReadHour = new wxButton(this, ID_GUI::BUTTON_READ_HOUR, "Read hour");
     auto buttonDetectClock = new wxButton(this, ID_GUI::BUTTON_DETECT_CLOCK, "Detect clock");
 
-    m_NextImageButton = new wxButton(this, ID_GUI::BUTTON_NEXT_IMAGE, ">>");
-    m_PreviousImageButton = new wxButton(this, ID_GUI::BUTTON_PREVIOUS_IMAGE, "<<");
-    m_NextImageButton->Enable(false);
-    m_PreviousImageButton->Enable(false);
-
     sizerButton->Add(buttonReadHour, 0, wxEXPAND | wxALL, FromDIP(5));
     sizerButton->Add(buttonDetectClock, 0, wxEXPAND | wxALL, FromDIP(5));
-
-    sizerButton->Add(m_NextImageButton, 0, wxEXPAND | wxALL, FromDIP(5));
-    sizerButton->Add(m_PreviousImageButton, 0, wxEXPAND | wxALL, FromDIP(5));
 
     sizer->Add(sizerButton, 0, wxEXPAND | wxALL, FromDIP(5));
 
@@ -60,9 +54,11 @@ BEGIN_EVENT_TABLE(MainFrameView, wxFrame)
 
     EVT_BUTTON(ID_GUI::BUTTON_READ_HOUR, MainFrameView::OnClickReadHour)
     EVT_BUTTON(ID_GUI::BUTTON_DETECT_CLOCK, MainFrameView::OnClickDetectClock)
-    EVT_BUTTON(ID_GUI::BUTTON_NEXT_IMAGE, MainFrameView::OnClickNextImage)
-    EVT_BUTTON(ID_GUI::BUTTON_PREVIOUS_IMAGE, MainFrameView::OnClickPreviousImage)
     
+    EVT_TOOL(wxID_ZOOM_IN, MainFrameView::OnZoomIn)
+    EVT_TOOL(wxID_ZOOM_OUT, MainFrameView::OnZoomOut)
+    EVT_TOOL(wxID_UNDO, MainFrameView::OnClickNextImage)
+    EVT_TOOL(wxID_REDO, MainFrameView::OnClickPreviousImage)
 END_EVENT_TABLE()
 
 
@@ -71,17 +67,17 @@ void MainFrameView::InitMenuBar()
     // File menu
     wxMenu* menuFile = new wxMenu();
     wxMenuItem* fileItem = new wxMenuItem(menuFile, wxID_FILE, "open image");
-    //fileItem->SetBitmap(wxBitmap(loadImage));
+    fileItem->SetBitmap(wxBitmap(loadIcon));
     menuFile->Append(fileItem);
     menuFile->AppendSeparator();
     wxMenuItem* quitItem = new wxMenuItem(menuFile, wxID_EXIT, "Exit");
-    //quitItem->SetBitmap(wxBitmap(closeIcon));
+    quitItem->SetBitmap(wxBitmap(quitIcon));
     menuFile->Append(quitItem);
 
     // Help menu
     wxMenu* menuHelp = new wxMenu();
     wxMenuItem* helpItem = new wxMenuItem(menuHelp, wxID_HELP, "wiki");
-    //helpItem->SetBitmap(wxBitmap(helpIcon));
+    helpItem->SetBitmap(wxBitmap(helpIcon));
     menuHelp->Append(helpItem);
 
     // add different menu in menu bar 
@@ -90,6 +86,33 @@ void MainFrameView::InitMenuBar()
     menuBarre->Append(menuHelp,("Help"));
 
     SetMenuBar(menuBarre);
+}
+
+
+void MainFrameView::EnableButtonTools(bool enable)
+{
+    GetToolBar()->EnableTool(wxID_REDO,   enable);
+    GetToolBar()->EnableTool(wxID_UNDO,  enable);
+}
+
+void MainFrameView::InitToolsBar()
+{
+    wxToolBar* toolbar = CreateToolBar(wxTB_FLAT | wxTB_HORIZONTAL | wxNO_BORDER);
+    toolbar->AddSeparator();
+
+    // zoom et dezoom
+    toolbar->AddTool(wxID_ZOOM_IN, _("zoom In"), wxBitmap(zoomInIcon), _("zoom In"));
+    toolbar->AddTool(wxID_ZOOM_OUT, _("zoom Out"), wxBitmap(zoomOutIcon), _("zoom Out"));
+    toolbar->AddSeparator();
+
+    // undo et redo
+    toolbar->AddTool(wxID_REDO, _("redo"), wxBitmap(previousIcon), _("next image"));
+    toolbar->AddTool(wxID_UNDO, _("undo"), wxBitmap(nextIcon), _("previous image"));
+    toolbar->AddSeparator();
+
+    EnableButtonTools(false);
+
+    toolbar->Realize();
 }
 
 
@@ -131,9 +154,7 @@ void MainFrameView::OnLoadImage(wxCommandEvent& event)
     }
 
     UpdateImage(m_CurrentImage);
-
-    m_NextImageButton->Enable(false);
-    m_PreviousImageButton->Enable(false);
+    EnableButtonTools(false);
 
     PopStatusText(0);
 }
@@ -162,9 +183,7 @@ void MainFrameView::OnClickReadHour(wxCommandEvent& event)
     {
         m_staticTextTime->SetLabel(m_ViewModel->ReadHour());
         UpdateImage(m_CurrentImage);
-
-        m_NextImageButton->Enable(true);
-        m_PreviousImageButton->Enable(true);
+        EnableButtonTools(true);
     }
     catch(const std::exception& e)
     {
@@ -184,9 +203,7 @@ void MainFrameView::OnClickDetectClock(wxCommandEvent& event)
     {
         m_ViewModel->DetectClock();
         UpdateImage(m_CurrentImage);
-
-        m_NextImageButton->Enable(true);
-        m_PreviousImageButton->Enable(true);
+        EnableButtonTools(true);
     }
     catch(const std::exception& e)
     {
@@ -229,6 +246,18 @@ void MainFrameView::OnClickPreviousImage(wxCommandEvent& event)
     {
         wxMessageBox(_(e.what()), _("Error"));
     }
+}
+
+
+void MainFrameView::OnZoomIn(wxCommandEvent& event)
+{
+    m_bitmap->ZoomIn();
+}
+
+
+void MainFrameView::OnZoomOut(wxCommandEvent& event)
+{
+    m_bitmap->ZoomOut();
 }
 
 

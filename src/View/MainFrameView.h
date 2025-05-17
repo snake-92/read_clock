@@ -22,9 +22,11 @@ public:
 protected:
     // Init
     void InitMenuBar();
+    void InitToolsBar();
     void InitStatusBar();
 
     void UpdateImage(const wxImage &image);
+    void EnableButtonTools(bool enable);
 
     // Event menu
     void OnLoadImage(wxCommandEvent& event);
@@ -34,6 +36,8 @@ protected:
     // Event button
     void OnClickReadHour(wxCommandEvent& event);
     void OnClickDetectClock(wxCommandEvent& event);
+    void OnZoomIn(wxCommandEvent& event);
+    void OnZoomOut(wxCommandEvent& event);
     void OnClickNextImage(wxCommandEvent& event);
     void OnClickPreviousImage(wxCommandEvent& event);
 
@@ -42,8 +46,6 @@ private:
     std::shared_ptr<BufferedBitmap> m_bitmap;
     wxImage m_CurrentImage; 
     wxStaticText* m_staticTextTime;
-    wxButton* m_NextImageButton;
-    wxButton* m_PreviousImageButton;
 
 DECLARE_EVENT_TABLE()
 };
