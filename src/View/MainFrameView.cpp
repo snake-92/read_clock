@@ -11,31 +11,43 @@ MainFrameView::MainFrameView(const wxString &title, const wxPoint &pos, const wx
     InitToolsBar();
     InitStatusBar();
 
-    // panels
-    auto sizer = new wxBoxSizer(wxHORIZONTAL);
-
-    // panel boutons
-    auto sizerButton = new wxBoxSizer(wxVERTICAL);
-    auto buttonReadHour = new wxButton(this, ID_GUI::BUTTON_READ_HOUR, "Read hour");
+    // all widgets in main window
+    // buttons
+    auto buttonReadHour = new wxButton(this, ID_GUI::BUTTON_READ_HOUR, "Read hour", wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT);
+    //buttonReadHour->SetBitmap(wxBitmap(readTimeIcon), wxRIGHT);
+    //buttonReadHour->SetBitmapMargins(4,0);
+    //buttonReadHour->Fit();
     auto buttonDetectClock = new wxButton(this, ID_GUI::BUTTON_DETECT_CLOCK, "Detect clock");
+    buttonDetectClock->SetBitmap(wxBitmap(searchClockIcon), wxRIGHT);
+    buttonDetectClock->SetBitmapMargins(4,0);
+    buttonDetectClock->Fit();
 
-    sizerButton->Add(buttonReadHour, 0, wxEXPAND | wxALL, FromDIP(5));
-    sizerButton->Add(buttonDetectClock, 0, wxEXPAND | wxALL, FromDIP(5));
-
-    sizer->Add(sizerButton, 0, wxEXPAND | wxALL, FromDIP(5));
-
-    // panel viewer image
-    auto sizerImage = new wxBoxSizer(wxHORIZONTAL);
+    // viewer
     m_bitmap = std::make_shared<BufferedBitmap>(this, wxID_ANY, wxBitmap(wxSize(1, 1)), wxDefaultPosition, FromDIP(wxSize(700, 500)));
-    sizerImage->Add(m_bitmap.get(), 1, wxEXPAND | wxALL, FromDIP(5));
 
-    sizer->Add(sizerButton, 0, wxEXPAND | wxALL, FromDIP(5));
-    sizer->AddSpacer(FromDIP(5));
-    sizer->Add(sizerImage, 1, wxEXPAND | wxALL, FromDIP(5));
-
+    // result of the detection
     m_staticTextTime = new wxStaticText(this, wxID_ANY, "00:00");
-    sizerImage->Add(m_staticTextTime, 0, wxEXPAND | wxALL, FromDIP(10));
+    wxFont font = m_staticTextTime->GetFont();
+    font.SetPointSize(16);   // increase size (by default : 10 or 11)
+    font.MakeBold();         // bold texte
+    m_staticTextTime->SetFont(font);
 
+    // all sizers
+    // sizer button
+    auto sizerLeft = new wxBoxSizer(wxVERTICAL);
+    sizerLeft->Add(buttonReadHour, 1, wxEXPAND | wxALL, FromDIP(5));
+    sizerLeft->AddSpacer(FromDIP(5));
+    sizerLeft->Add(buttonDetectClock, 1, wxEXPAND | wxALL, FromDIP(5));
+
+    // sizer image and result text
+    auto sizerRight = new wxBoxSizer(wxVERTICAL);
+    sizerRight->Add(m_bitmap.get(), 1, wxEXPAND | wxALL, FromDIP(5));
+    sizerRight->Add(m_staticTextTime, 0, wxALIGN_CENTER | wxALL, FromDIP(5));
+
+    auto sizer = new wxBoxSizer(wxHORIZONTAL);
+    sizer->Add(sizerLeft, 0, wxEXPAND | wxALL, FromDIP(5));
+    sizer->AddSpacer(FromDIP(5));
+    sizer->Add(sizerRight, 1, wxEXPAND | wxALL, FromDIP(5));
     this->SetSizerAndFit(sizer);
 
     // init view model

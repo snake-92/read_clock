@@ -8,5 +8,7 @@
 #include "icons/previous.xpm"
 #include "icons/zoom-in.xpm"
 #include "icons/zoom-out.xpm"
+#include "icons/readTime.xpm"
+#include "icons/searchClock.xpm"
 
 #endif
