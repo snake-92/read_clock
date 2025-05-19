@@ -3,6 +3,7 @@
 Model::Model()
 {
     m_time = "";
+    m_ReadHourFinished = false;
 }
 
 Model::~Model()
@@ -13,6 +14,8 @@ Model::~Model()
 
 std::vector<cv::Mat> Model::ReadHour(const cv::Mat& image)
 {
+    m_ReadHourFinished = false;
+
     cv::Mat imgNDG, imGauss, imThresh, imgSkelet, imFinal;
     std::vector<cv::Mat> listImg; // list of alls filter images
 
@@ -114,7 +117,11 @@ std::vector<cv::Mat> Model::ReadHour(const cv::Mat& image)
 
     m_time = txtHour + ":" + txtMinute;
 
-    listImg.push_back(imFinal.clone());
+    //listImg.push_back(imFinal.clone());
+    // save result images. this image will be displyed if the user click on detect button
+    m_imgOverlay = imFinal.clone();
+    m_ReadHourFinished = true;
+
     return listImg;
 }
 
@@ -131,9 +138,10 @@ std::string Model::GetTime()
 
 cv::Mat Model::DetectClock(const cv::Mat& image)
 {
-    cv::Mat img;
-    cv::GaussianBlur(image, img, cv::Size(3,3), 0);
-    return img;
+    if(!m_ReadHourFinished)
+        return image;
+
+    return m_imgOverlay;
 }
 
 

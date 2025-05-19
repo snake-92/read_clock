@@ -21,6 +21,7 @@ MainFrameView::MainFrameView(const wxString &title, const wxPoint &pos, const wx
     buttonDetectClock->SetBitmap(wxBitmap(searchClockIcon), wxRIGHT);
     buttonDetectClock->SetBitmapMargins(4,0);
     buttonDetectClock->Fit();
+    buttonDetectClock->Enable(false);
 
     // viewer
     m_bitmap = std::make_shared<BufferedBitmap>(this, wxID_ANY, wxBitmap(wxSize(1, 1)), wxDefaultPosition, FromDIP(wxSize(700, 500)));
@@ -51,7 +52,8 @@ MainFrameView::MainFrameView(const wxString &title, const wxPoint &pos, const wx
     this->SetSizerAndFit(sizer);
 
     // init view model
-    m_ViewModel = std::make_shared<ClassVM>(m_CurrentImage);    
+    m_ViewModel = std::make_shared<ClassVM>(m_CurrentImage);
+    m_NewImage = false;    
 }
 
 MainFrameView::~MainFrameView()
@@ -167,6 +169,9 @@ void MainFrameView::OnLoadImage(wxCommandEvent& event)
 
     UpdateImage(m_CurrentImage);
     EnableButtonTools(false);
+    wxButton* btn = wxDynamicCast(FindWindow(ID_GUI::BUTTON_DETECT_CLOCK), wxButton);
+    if(btn) btn->Enable(false);
+    m_NewImage = true;
 
     PopStatusText(0);
 }
@@ -191,11 +196,19 @@ void MainFrameView::OnClickReadHour(wxCommandEvent& event)
         return;
     }
 
+    if(!m_NewImage)
+    {
+        return;
+    }
+
     try
     {
         m_staticTextTime->SetLabel(m_ViewModel->ReadHour());
         UpdateImage(m_CurrentImage);
-        EnableButtonTools(true);
+        EnableButtonTools(true);        
+        wxButton* btn = wxDynamicCast(FindWindow(ID_GUI::BUTTON_DETECT_CLOCK), wxButton);
+        if (btn) btn->Enable(true);  
+        m_NewImage = false;     
     }
     catch(const std::exception& e)
     {
@@ -215,7 +228,6 @@ void MainFrameView::OnClickDetectClock(wxCommandEvent& event)
     {
         m_ViewModel->DetectClock();
         UpdateImage(m_CurrentImage);
-        EnableButtonTools(true);
     }
     catch(const std::exception& e)
     {

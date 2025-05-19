@@ -46,6 +46,7 @@ private:
     std::shared_ptr<BufferedBitmap> m_bitmap;
     wxImage m_CurrentImage; 
     wxStaticText* m_staticTextTime;
+    bool m_NewImage;
 
 DECLARE_EVENT_TABLE()
 };

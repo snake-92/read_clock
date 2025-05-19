@@ -40,6 +40,8 @@ protected:
     
 private:
     std::string m_time;
+    cv::Mat m_imgOverlay;
+    bool m_ReadHourFinished;
 };
 
 #endif

@@ -78,6 +78,9 @@ void ClassVM::ConvertCvMatToWxImage(const cv::Mat& image_)
 
 void ClassVM::NextImage()
 {
+    if(m_listImg.size() == 0) 
+        throw std::invalid_argument("No images found.");
+
     m_currentImgIndex++;
 
     // limits management 
@@ -90,6 +93,9 @@ void ClassVM::NextImage()
 
 void ClassVM::PreviousImage()
 {
+    if(m_listImg.size() == 0) 
+        throw std::invalid_argument("No images found.");
+
     m_currentImgIndex--;
 
     // limits management 
@@ -107,7 +113,6 @@ wxString ClassVM::ReadHour()
         m_listImg.clear();
         m_currentImgIndex = 0;
         m_listImg = m_model->ReadHour(ConvertWxImageToCvMat(m_Image));
-        //ConvertCvMatToWxImage(m_listImg[m_currentImgIndex]);
     }
     catch(const std::exception& e)
     {
