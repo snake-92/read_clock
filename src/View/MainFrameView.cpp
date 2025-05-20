@@ -13,18 +13,21 @@ MainFrameView::MainFrameView(const wxString &title, const wxPoint &pos, const wx
 
     // all widgets in main window
     // buttons
-    auto buttonReadHour = new wxButton(this, ID_GUI::BUTTON_READ_HOUR, "Read hour", wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT);
-    //buttonReadHour->SetBitmap(wxBitmap(readTimeIcon), wxRIGHT);
-    //buttonReadHour->SetBitmapMargins(4,0);
-    //buttonReadHour->Fit();
+    auto buttonReadHour = new wxButton(this, ID_GUI::BUTTON_READ_HOUR, "Read hour");
+    buttonReadHour->SetBitmap(wxBitmap(readTimeIcon), wxRIGHT);
+    buttonReadHour->SetBitmapMargins(4,0);
+    buttonReadHour->Fit();
+    buttonReadHour->Bind(wxEVT_MOTION, &MainFrameView::OnMouseMoveEvent, this);
     auto buttonDetectClock = new wxButton(this, ID_GUI::BUTTON_DETECT_CLOCK, "Detect clock");
     buttonDetectClock->SetBitmap(wxBitmap(searchClockIcon), wxRIGHT);
     buttonDetectClock->SetBitmapMargins(4,0);
     buttonDetectClock->Fit();
     buttonDetectClock->Enable(false);
+    buttonDetectClock->Bind(wxEVT_MOTION, &MainFrameView::OnMouseMoveEvent, this);
 
     // viewer
     m_bitmap = std::make_shared<BufferedBitmap>(this, wxID_ANY, wxBitmap(wxSize(1, 1)), wxDefaultPosition, FromDIP(wxSize(700, 500)));
+    m_bitmap->Bind(wxEVT_MOTION, &MainFrameView::OnMouseMoveEvent, this);
 
     // result of the detection
     m_staticTextTime = new wxStaticText(this, wxID_ANY, "00:00");
@@ -43,7 +46,7 @@ MainFrameView::MainFrameView(const wxString &title, const wxPoint &pos, const wx
     // sizer image and result text
     auto sizerRight = new wxBoxSizer(wxVERTICAL);
     sizerRight->Add(m_bitmap.get(), 1, wxEXPAND | wxALL, FromDIP(5));
-    sizerRight->Add(m_staticTextTime, 0, wxALIGN_CENTER | wxALL, FromDIP(5));
+    sizerRight->Add(m_staticTextTime, 0, wxALIGN_CENTER | wxALL, FromDIP(5)); 
 
     auto sizer = new wxBoxSizer(wxHORIZONTAL);
     sizer->Add(sizerLeft, 0, wxEXPAND | wxALL, FromDIP(5));
@@ -132,12 +135,34 @@ void MainFrameView::InitToolsBar()
 
 void MainFrameView::InitStatusBar()
 {
-    CreateStatusBar(2); // barre de status avec deux emplacements
+    auto statusBar = CreateStatusBar(2); // barre de status avec deux emplacements
+    statusBar->SetDoubleBuffered(true);  // help to stop flickering
     SetStatusText(_("Ready !"),0); // texte sur emplacement 0
     SetStatusText(_(" mouse ..."),1);  // texte sur emplacement 1
 
     //PushStatusText(_("ton texte"),0);  // ecrire un texte sur l'emplecement 0
     //PopStatusText(0);   // revenir sur le texte de base de l'emplecement 0
+}
+
+void MainFrameView::OnMouseMoveEvent(wxMouseEvent& event)
+{
+    ID_GUI id = (ID_GUI)event.GetId();
+
+    SetStatusText(_("Ready !"),0);
+
+    if(id == ID_GUI::BUTTON_READ_HOUR)
+    {
+        SetStatusText(_("Read hour on the image"),0);
+    }
+    else if(id == ID_GUI::BUTTON_DETECT_CLOCK)
+    {
+        SetStatusText(_("Display all brand detection"),0);
+    } 
+    else
+    {
+        wxPoint pt = event.GetPosition();
+        SetStatusText(wxString::Format("mouse position: (%d, %d)", pt.x, pt.y),1);
+    } 
 }
 
 

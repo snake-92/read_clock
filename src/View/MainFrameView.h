@@ -7,7 +7,7 @@
 
 enum ID_GUI
 {
-    BUTTON_READ_HOUR,
+    BUTTON_READ_HOUR = wxID_HIGHEST + 1,
     BUTTON_DETECT_CLOCK,
     BUTTON_NEXT_IMAGE,
     BUTTON_PREVIOUS_IMAGE
@@ -40,6 +40,7 @@ protected:
     void OnZoomOut(wxCommandEvent& event);
     void OnClickNextImage(wxCommandEvent& event);
     void OnClickPreviousImage(wxCommandEvent& event);
+    void OnMouseMoveEvent(wxMouseEvent& event);
 
 private:
     std::shared_ptr<ClassVM> m_ViewModel;
