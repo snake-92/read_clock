@@ -51,7 +51,7 @@ std::vector<cv::Mat> Model::ReadHour(const cv::Mat& image)
 
     // permit to detect bands only in a certain distance
     // the image has a same number of rows and cols
-    int distMin = (imThresh.cols/2)-30;
+    int distMin = (imThresh.cols/2)-50;
 
     for(const auto& line : lines)
     {
@@ -59,19 +59,19 @@ std::vector<cv::Mat> Model::ReadHour(const cv::Mat& image)
         cv::Point p2 = cv::Point(line[2], line[3]);
 
         // distance with center
-        double d0 = Distance(p1, center);
-        double d2 = Distance(p2, center);
+        double dist1 = Distance(p1, center);
+        double dist2 = Distance(p2, center);
 
         // p1 is always nearest to center
-        if(d0 > d2)
+        if(dist1 > dist2)
         {
             std::swap(p1, p2);
         }
 
-        d0 = std::sqrt(std::pow(p1.x - center.x, 2) + std::pow(p1.y - center.y, 2));
+        dist1 = Distance(p1, center);
         // verify the position of the line. Permit to know if it is the band or not
         // we use p1
-        if(d0 > distMin)
+        if(dist1 > distMin)
         {
             continue;
         }
@@ -86,13 +86,18 @@ std::vector<cv::Mat> Model::ReadHour(const cv::Mat& image)
         bands.push_back(BANDS{p1, p2, angle});
     }
 
+    if(bands.empty())
+    {
+        throw std::invalid_argument("No bands found. (ReadHour)");
+    }
+
     // delete all line with the same angle
     bands = FilterBandsByAngle(bands, 3.0);
     IdentifyBands(bands, center);
 
     std::string txtMinute(""), txtHour("");
     // draw bands
-    for(const auto& band : bands)
+    for(auto& band : bands)
     {
         cv::line(imFinal, band.p1, band.p2, cv::Scalar(255,0,0), 2, cv::LINE_AA);
         cv::circle(imFinal, band.p1, 3, cv::Scalar(0,255,0), 2);
@@ -100,7 +105,7 @@ std::vector<cv::Mat> Model::ReadHour(const cv::Mat& image)
 
         std::string text = std::to_string((int)band.angle);
         cv::putText(imFinal, text, band.p1, cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255,0,255), 1);
-
+        
         if(band.type == TYPE_BAND::HOUR)
         {
             cv::putText(imFinal, "HOUR", band.p2, cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255,0,255), 1);
@@ -113,8 +118,16 @@ std::vector<cv::Mat> Model::ReadHour(const cv::Mat& image)
             cv::putText(imFinal, GetMinute(band) , cv::Point(30,15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255,0,255), 1);
             txtMinute = GetMinute(band);
         }
+        else if(band.type == TYPE_BAND::SAME)
+        {
+            // In this situation, minute angle is the same as hour angle
+            band.type == TYPE_BAND::HOUR;
+            txtHour = GetHours(band); 
+            band.type == TYPE_BAND::MINUTE;
+            txtMinute = GetMinute(band);
+        }
     }
-
+ 
     m_time = txtHour + ":" + txtMinute;
 
     //listImg.push_back(imFinal.clone());
@@ -204,6 +217,12 @@ std::vector<BANDS> Model::FilterBandsByAngle(std::vector<BANDS>& lines, double a
     }
 
     std::vector<BANDS> result;
+
+    if(lines.size() == 1)
+    {
+        result.push_back(lines[0]);
+        return result;
+    }
 
     // Sort lines by angle
     std::sort(lines.begin(), lines.end(), [](const BANDS& a, const BANDS& b) { return a.angle < b.angle; });

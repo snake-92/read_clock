@@ -197,6 +197,7 @@ void MainFrameView::OnLoadImage(wxCommandEvent& event)
     wxButton* btn = wxDynamicCast(FindWindow(ID_GUI::BUTTON_DETECT_CLOCK), wxButton);
     if(btn) btn->Enable(false);
     m_NewImage = true;
+    m_staticTextTime->SetLabel("00:00");
 
     PopStatusText(0);
 }
