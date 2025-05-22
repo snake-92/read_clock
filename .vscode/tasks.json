@@ -22,7 +22,8 @@
                 "-lopencv_videoio_ffmpeg490_64",
                 "-LC:\\wxwidget-3.2.5\\lib\\gcc_dll",
                 "-lwxmsw32u_gcc_custom",
-                "-lwxmsw32u_gl_gcc_custom"
+                "-lwxmsw32u_gl_gcc_custom",
+                "-mwindows",
             ],
             "options": {
                 "cwd": "${fileDirname}"
