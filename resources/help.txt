@@ -1,0 +1,3 @@
+pour compiler le .rc :
+
+windres App.rc -O coff -o App.o

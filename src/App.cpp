@@ -37,7 +37,8 @@ bool MyApp::OnInit()
 
     wxInitAllImageHandlers(); // allow all events on the image
 
-    MainFrameView *frame = new MainFrameView("Hello World", wxDefaultPosition, wxSize(1280, 720));
+    MainFrameView *frame = new MainFrameView("Time reader", wxDefaultPosition, wxSize(1280, 720));
+    frame->SetIcon(wxICON(MY_ICON));
     frame->Show(true);
     return true;
 }

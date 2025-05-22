@@ -11,6 +11,7 @@
                 "${fileDirname}\\View\\*.cpp",
                 "${fileDirname}\\Model\\*.cpp",
                 "${fileDirname}\\ViewModel\\*.cpp",
+                "${fileDirname}\\..\\resources\\*.o",
                 "-o",
                 "${fileDirname}\\..\\bin\\${fileBasenameNoExtension}.exe",
                 "-IC:\\opencv-4.9.0\\build_mgw\\install\\include",
