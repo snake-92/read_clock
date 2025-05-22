@@ -236,6 +236,10 @@ void MainFrameView::OnClickReadHour(wxCommandEvent& event)
         if (btn) btn->Enable(true);  
         m_NewImage = false;     
     }
+    catch(const std::invalid_argument& e)
+    {
+        wxMessageBox(_(e.what()), _("Error"));
+    }
     catch(const std::exception& e)
     {
         wxMessageBox(_(e.what()), _("Error"));
@@ -254,6 +258,10 @@ void MainFrameView::OnClickDetectClock(wxCommandEvent& event)
     {
         m_ViewModel->DetectClock();
         UpdateImage(m_CurrentImage);
+    }
+    catch(const std::invalid_argument& e)
+    {
+        wxMessageBox(_(e.what()), _("Error"));
     }
     catch(const std::exception& e)
     {
@@ -274,6 +282,10 @@ void MainFrameView::OnClickNextImage(wxCommandEvent& event)
         m_ViewModel->NextImage();
         UpdateImage(m_CurrentImage);
     }
+    catch(const std::invalid_argument& e)
+    {
+        wxMessageBox(_(e.what()), _("Error"));
+    }
     catch(const std::exception& e)
     {
         wxMessageBox(_(e.what()), _("Error"));
@@ -291,6 +303,10 @@ void MainFrameView::OnClickPreviousImage(wxCommandEvent& event)
     {
         m_ViewModel->PreviousImage();
         UpdateImage(m_CurrentImage);
+    }
+    catch(const std::invalid_argument& e)
+    {
+        wxMessageBox(_(e.what()), _("Error"));
     }
     catch(const std::exception& e)
     {

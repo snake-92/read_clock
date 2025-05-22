@@ -37,6 +37,7 @@ protected:
     double Distance(const cv::Point& p1, const cv::Point& p2);
     std::string GetMinute(const BANDS& band);
     std::string GetHours(const BANDS& band);
+    std::string GetHoursSameAngle(const BANDS& band);
     
 private:
     std::string m_time;

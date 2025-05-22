@@ -121,9 +121,9 @@ std::vector<cv::Mat> Model::ReadHour(const cv::Mat& image)
         else if(band.type == TYPE_BAND::SAME)
         {
             // In this situation, minute angle is the same as hour angle
-            band.type == TYPE_BAND::HOUR;
-            txtHour = GetHours(band); 
-            band.type == TYPE_BAND::MINUTE;
+            band.type = TYPE_BAND::HOUR;
+            txtHour = GetHoursSameAngle(band); 
+            band.type = TYPE_BAND::MINUTE;
             txtMinute = GetMinute(band);
         }
     }
@@ -401,6 +401,70 @@ std::string Model::GetHours(const BANDS& band)
     else if(band.angle >= 330 && band.angle < 360)
     {
         return "03";
+    }
+
+    return "XX";
+}
+
+
+/// @brief Get hour if minute and hour band have the same angle
+/// @param band 
+/// @return 
+std::string Model::GetHoursSameAngle(const BANDS& band)
+{
+    if(band.type != TYPE_BAND::HOUR)
+    {
+        throw std::invalid_argument("Band is not hour. (GetHours)");
+    }
+
+    int gap = 5;
+    if(band.angle <= gap || band.angle >= 360-gap)
+    {
+        return "03";
+    }
+    else if(band.angle <= 30+gap && band.angle >= 30-gap)
+    {
+        return "02";
+    }
+    else if(band.angle <= 60+gap && band.angle >= 60-gap)
+    {
+        return "01";
+    }
+    else if(band.angle <= 90+gap && band.angle >= 90-gap)
+    {
+        return "12";
+    }
+    else if(band.angle <= 120+gap && band.angle >= 120-gap)
+    {
+        return "11";
+    }
+    else if(band.angle <= 150+gap && band.angle >= 150-gap)
+    {
+        return "10";
+    }
+    else if(band.angle <= 180+gap && band.angle >= 180-gap)
+    {
+        return "09";
+    }
+    else if(band.angle <= 210+gap && band.angle >= 210-gap)
+    {
+        return "08";
+    }
+    else if(band.angle <= 240+gap && band.angle >= 240-gap)
+    {
+        return "07";
+    }
+    else if(band.angle <= 270+gap && band.angle >= 270-gap)
+    {
+        return "06";
+    }
+    else if(band.angle <= 300+gap && band.angle >= 300-gap)
+    {
+        return "05";
+    }
+    else if(band.angle <= 330+gap && band.angle >= 330-gap)
+    {
+        return "04";
     }
 
     return "XX";
