@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Documentation - Mon Logiciel</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background-color: #f4f6f8;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+      animation: fadeInDown 1s ease-out;
+    }
+
+    nav {
+      background-color: #34495e;
+      padding: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #1abc9c;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    section {
+      margin-bottom: 3rem;
+      animation: fadeIn 0.8s ease-in;
+    }
+
+    h2 {
+      border-left: 5px solid #1abc9c;
+      padding-left: 0.5rem;
+      color: #2c3e50;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 1rem 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    img:hover {
+      transform: scale(1.03);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      background: #ecf0f1;
+      color: #888;
+    }
+
+    @media (max-width: 600px) {
+      nav {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Documentation - Mon Logiciel</h1>
+    <p>Guide d'utilisation et présentation complète</p>
+  </header>
+
+  <nav>
+    <a href="#introduction">Introduction</a>
+    <a href="#installation">Installation</a>
+    <a href="#utilisation">Utilisation</a>
+    <a href="#images">Illustrations</a>
+    <a href="#contact">Support</a>
+  </nav>
+
+  <div class="container">
+
+    <section id="introduction">
+      <h2>1. Introduction</h2>
+      <p>Ce logiciel permet d'automatiser le traitement des images et d'interagir avec une interface conviviale. Il est conçu pour fonctionner sous Windows avec GCC et prend en charge wxWidgets et OpenCV.</p>
+    </section>
+
+    <section id="installation">
+      <h2>2. Installation</h2>
+      <p>Téléchargez la dernière version depuis notre dépôt GitHub. Décompressez et exécutez <code>setup.exe</code>. Assurez-vous que TDM-GCC est installé.</p>
+      <img src="images/installation.png" alt="Capture d'écran de l'installation">
+    </section>
+
+    <section id="utilisation">
+      <h2>3. Comment utiliser le logiciel</h2>
+      <p>Après le lancement, cliquez sur <strong>Fichier > Nouveau Projet</strong> pour démarrer. Utilisez les outils dans la barre pour charger une image et appliquer des filtres.</p>
+      <img src="images/interface.png" alt="Interface principale du logiciel">
+    </section>
+
+    <section id="images">
+      <h2>4. Illustrations</h2>
+      <p>Voici quelques exemples de transformations réalisées avec le logiciel :</p>
+      <img src="images/exemple1.png" alt="Avant / après 1">
+      <img src="images/exemple2.png" alt="Avant / après 2">
+    </section>
+
+    <section id="contact">
+      <h2>5. Support & Contact</h2>
+      <p>Pour toute question, consultez la <a href="#">FAQ</a> ou contactez-nous à l'adresse <a href="mailto:support@monlogiciel.com">support@monlogiciel.com</a>.</p>
+    </section>
+
+  </div>
+
+  <footer>
+    &copy; 2025 Mon Logiciel — Tous droits réservés.
+  </footer>
+
+</body>
+</html>

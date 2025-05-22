@@ -1,5 +1,7 @@
 #include "MainFrameView.h"
 #include "../../resources/icons.h"
+#include <wx/stdpaths.h>
+#include <wx/filename.h>
 
 
 MainFrameView::MainFrameView(const wxString &title, const wxPoint &pos, const wxSize &size, long style) 
@@ -238,11 +240,11 @@ void MainFrameView::OnClickReadHour(wxCommandEvent& event)
     }
     catch(const std::invalid_argument& e)
     {
-        wxMessageBox(_(e.what()), _("Error"));
+        wxMessageBox(_(e.what()), _("Error"), wxICON_ERROR);
     }
     catch(const std::exception& e)
     {
-        wxMessageBox(_(e.what()), _("Error"));
+        wxMessageBox(_(e.what()), _("Error"), wxICON_ERROR);
     }
 }
 
@@ -261,11 +263,11 @@ void MainFrameView::OnClickDetectClock(wxCommandEvent& event)
     }
     catch(const std::invalid_argument& e)
     {
-        wxMessageBox(_(e.what()), _("Error"));
+        wxMessageBox(_(e.what()), _("Error"), wxICON_ERROR);
     }
     catch(const std::exception& e)
     {
-        wxMessageBox(_(e.what()), _("Error"));
+        wxMessageBox(_(e.what()), _("Error"), wxICON_ERROR);
     }   
 }
 
@@ -284,11 +286,11 @@ void MainFrameView::OnClickNextImage(wxCommandEvent& event)
     }
     catch(const std::invalid_argument& e)
     {
-        wxMessageBox(_(e.what()), _("Error"));
+        wxMessageBox(_(e.what()), _("Error"), wxICON_ERROR);
     }
     catch(const std::exception& e)
     {
-        wxMessageBox(_(e.what()), _("Error"));
+        wxMessageBox(_(e.what()), _("Error"), wxICON_ERROR);
     }
 }
 
@@ -306,11 +308,11 @@ void MainFrameView::OnClickPreviousImage(wxCommandEvent& event)
     }
     catch(const std::invalid_argument& e)
     {
-        wxMessageBox(_(e.what()), _("Error"));
+        wxMessageBox(_(e.what()), _("Error"), wxICON_ERROR);
     }
     catch(const std::exception& e)
     {
-        wxMessageBox(_(e.what()), _("Error"));
+        wxMessageBox(_(e.what()), _("Error"), wxICON_ERROR);
     }
 }
 
@@ -331,5 +333,13 @@ void MainFrameView::OnZoomOut(wxCommandEvent& event)
 /// @param event 
 void MainFrameView::OnHelp(wxCommandEvent& event)
 {
+    wxString exePath = wxStandardPaths::Get().GetExecutablePath();
+    wxFileName exeFile(exePath);
+    wxString folder = exeFile.GetPath();  // without exe name
+    wxString docPath = folder + wxT("/documentation/doc.html");
 
+    if (!wxLaunchDefaultBrowser(docPath))
+    {
+        wxMessageBox("Impossible to open the documentation.", "Error", wxICON_ERROR);
+    }
 }

@@ -11,17 +11,30 @@
 
 #include <iostream>
 #include "View/MainFrameView.h"
+#include <wx/snglinst.h>
 
 class MyApp : public wxApp 
 {
 public:
     virtual bool OnInit();
+
+private:
+    wxSingleInstanceChecker* m_checker = nullptr;
 };
 
 wxIMPLEMENT_APP(MyApp);
 
 bool MyApp::OnInit()
 {
+    m_checker = new wxSingleInstanceChecker("MyInstanceAppLock");
+
+    if (m_checker->IsAnotherRunning())
+    {
+        wxMessageBox("The app is already running.", "Info", wxOK | wxICON_INFORMATION);
+        delete m_checker;
+        return false; // Quitte l'application
+    }
+
     wxInitAllImageHandlers(); // allow all events on the image
 
     MainFrameView *frame = new MainFrameView("Hello World", wxDefaultPosition, wxSize(1280, 720));
