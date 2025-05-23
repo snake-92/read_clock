@@ -98,13 +98,12 @@
 <body>
 
   <header>
-    <h1>Documentation - Mon Logiciel</h1>
+    <h1>Documentation - Time reader</h1>
     <p>Guide d'utilisation et présentation complète</p>
   </header>
 
   <nav>
     <a href="#introduction">Introduction</a>
-    <a href="#installation">Installation</a>
     <a href="#utilisation">Utilisation</a>
     <a href="#images">Illustrations</a>
     <a href="#contact">Support</a>
@@ -114,37 +113,41 @@
 
     <section id="introduction">
       <h2>1. Introduction</h2>
-      <p>Ce logiciel permet d'automatiser le traitement des images et d'interagir avec une interface conviviale. Il est conçu pour fonctionner sous Windows avec GCC et prend en charge wxWidgets et OpenCV.</p>
-    </section>
-
-    <section id="installation">
-      <h2>2. Installation</h2>
-      <p>Téléchargez la dernière version depuis notre dépôt GitHub. Décompressez et exécutez <code>setup.exe</code>. Assurez-vous que TDM-GCC est installé.</p>
-      <img src="images/installation.png" alt="Capture d'écran de l'installation">
+      <p>Ce logiciel permet de lire et afficher l'heure sur une image de montre analogique. Il est conçu pour fonctionner sous Windows.</p>
     </section>
 
     <section id="utilisation">
       <h2>3. Comment utiliser le logiciel</h2>
-      <p>Après le lancement, cliquez sur <strong>Fichier > Nouveau Projet</strong> pour démarrer. Utilisez les outils dans la barre pour charger une image et appliquer des filtres.</p>
-      <img src="images/interface.png" alt="Interface principale du logiciel">
+      <p>Après le lancement, cliquez sur <strong>File > Open image</strong> pour ouvrir une image. Tous les formats sont pris en charge.</p>
+      <img src="images/FileMenu.png" alt="Interface principale du logiciel">
+	  <p>Une fois l'image ouvert, cliquez sur <strong>Read hour</strong> pour lancer le traitement et afficher l'heure. L'heure détectée s'affiche en dessous de l'image. de base le texte est à <strong>00:00</strong></p>
+      <img src="images/ButReadHour.png" alt="Interface principale du logiciel">
+	  <p>Si le traitement c'est bien déroulé, le bouton <strong>Detect clock</strong> s'active. En cliquant dessus vous pouvez voir l'image resultat sur laquelle on fait la détection de chaque aiguille.</p>
+      <img src="images/ButDetect.png" alt="Interface principale du logiciel">
+	  <p>C'est possible de voir les images présentant les étapes du traitement qui est fait. Il suffit de cliquer sur les fléches gauche ou droite de la barre d'outils.</p>
+	  <img src="images/Fleches.png" alt="Interface principale du logiciel">
+	  <p>Les autres boutons de la barre d'outils permettent de faire un zoom ou dezoom dans l'image</p>
+	  <img src="images/Zoom.png" alt="Interface principale du logiciel">
+	  <p>La barre de status donne des informations sur la position du curseur sur l'image et le status du traitement ou l'aide lorsqu'on survol les boutons</p>
+	  <img src="images/Status.png" alt="Interface principale du logiciel">
     </section>
 
     <section id="images">
       <h2>4. Illustrations</h2>
-      <p>Voici quelques exemples de transformations réalisées avec le logiciel :</p>
+      <p>Voici quelques exemples détections réalisées avec le logiciel :</p>
       <img src="images/exemple1.png" alt="Avant / après 1">
       <img src="images/exemple2.png" alt="Avant / après 2">
     </section>
 
     <section id="contact">
-      <h2>5. Support & Contact</h2>
+      <h2>5. Contact</h2>
       <p>Pour toute question, consultez la <a href="#">FAQ</a> ou contactez-nous à l'adresse <a href="mailto:support@monlogiciel.com">support@monlogiciel.com</a>.</p>
     </section>
 
   </div>
 
   <footer>
-    &copy; 2025 Mon Logiciel — Tous droits réservés.
+    &copy; 2025 Time reader — Tous droits réservés.
   </footer>
 
 </body>
